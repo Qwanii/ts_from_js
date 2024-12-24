@@ -10,9 +10,17 @@ import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import SelectCustom from '../../containers/select-custom';
+import { useSsrEffect } from '@issr/core';
 
  function Main() {
   const store = useStore();
+
+  // useSsrEffect(async() => {
+  //   await Promise.all([
+  //     store.actions.catalog.initParams(),
+  //     store.actions.categories.load(),
+  //   ]);
+  // }, [])
 
   useInit(
     async () => {

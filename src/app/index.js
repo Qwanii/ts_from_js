@@ -19,10 +19,10 @@ import Chat from './chat';
  */
  function App() {
   
+   const store = useStore();
   
-  await store.actions.session.remind();
-  useInit(async () => {
-    const store = useStore();
+   useInit(async () => {
+     await store.actions.session.remind();
   });
 
   return (
