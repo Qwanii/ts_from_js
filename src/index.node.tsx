@@ -1,6 +1,4 @@
-import {createRoot, Root} from 'react-dom/client';
 import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { ServicesContext } from './context';
 import { I18nProvider } from './i18n/context';
 import App from './app';
@@ -10,12 +8,9 @@ import { renderToString } from 'react-dom/server'
 
 export default (params) => {
 
-  
   const services = new Services(config);
   
-  // Первый рендер приложения
   const jsx = (
-    <Provider store={services.redux}>
       <ServicesContext.Provider value={services}>
         <I18nProvider>
           <MemoryRouter>
@@ -23,9 +18,9 @@ export default (params) => {
           </MemoryRouter>
         </I18nProvider>
       </ServicesContext.Provider>
-    </Provider>
   )
   const html = renderToString(jsx)
 
   return { html }
+
 }
