@@ -17,10 +17,12 @@ import Chat from './chat';
  * Приложение
  * @returns {React.ReactElement}
  */
-function App() {
-  const store = useStore();
+ function App() {
+  
+  
+  await store.actions.session.remind();
   useInit(async () => {
-    await store.actions.session.remind();
+    const store = useStore();
   });
 
   return (

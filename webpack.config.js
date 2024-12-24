@@ -98,7 +98,7 @@ if (isDevelopment && isWeb) {
   config.devtool = 'inline-source-map';
   config.devServer = {
     static: path.join(__dirname, 'dist'),
-    port: 8011,
+    port: 8010,
     historyApiFallback: true,
     proxy: [
       {

@@ -8,10 +8,13 @@ const app = express();
 
 const path = require('path');
 
+const timeout = require('connect-timeout')
+
+
 const { renderToString } = require('react-dom/server');
 const { Root } = require('./dist/node/main.js');
 
-app.use(express.static(path.resolve(__dirname, './dist/web'), { index: false }));
+app.use(express.static(path.resolve(__dirname, './dist/web'), { index: false }),timeout(100));
 
 app.get('*', function(request, response) {
 

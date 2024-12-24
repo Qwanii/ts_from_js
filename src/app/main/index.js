@@ -11,8 +11,9 @@ import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import SelectCustom from '../../containers/select-custom';
 
-function Main() {
+ function Main() {
   const store = useStore();
+
   useInit(
     async () => {
       await Promise.all([
