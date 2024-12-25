@@ -1,16 +1,17 @@
 const React = require('react')
-
 const express = require('express');
-
 const app = express();
-
-// const timeout = require('connect-timeout')
-
 const path = require('path');
-
-const { renderToString } = require('react-dom/server');
-
 const { Root } = require('./dist/node/main.js');
+const proxy = require('express-http-proxy');
+
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+// app.use('/api/v1', proxy('query.rest', {
+//     proxyReqPathResolver: function (req) {
+//       return '/api/v1' + req.url;
+//     }
+//   }));
 
 app.use(express.static(path.resolve(__dirname, './dist/web'), { index: false }), );
 
@@ -41,4 +42,4 @@ app.get('*', function(request, response) {
 })
 
 
-app.listen(3002)
+app.listen(3004)

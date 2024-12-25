@@ -1,5 +1,6 @@
 import APIService from './api';
 import Websocket from './socket';
+import SSRService from './ssr';
 import Store from './store';
 import createStoreRedux from './store-redux';
 
@@ -29,6 +30,7 @@ export type AppConfig = {
   websocket: {
     baseSocketUrl?: string
   }
+  ssr: any
 };
 
 
@@ -38,6 +40,7 @@ class Services {
    _redux: any
   config: AppConfig
   _websocket: any
+  _ssr: any
 
   constructor(config: AppConfig) {
     this.config = config;
@@ -82,6 +85,13 @@ class Services {
       this._websocket = new Websocket(this, this.config.websocket)
     }
     return this._websocket
+  }
+
+  get ssr() {
+    if(!this._ssr) {
+      this._ssr = new SSRService(this, this.config.ssr)
+    }
+    return this._ssr
   }
 }
 

@@ -50,21 +50,22 @@ class CatalogState extends StoreModule {
    * @return {Promise<void>}
    */
   async initParams(newParams: object = {}): Promise<void> {
-
-    const urlParams = new URLSearchParams(window.location.search);
-    let validParams: any = {};
-    
-    if (this.config.saveParams) {
-      if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
-      if (urlParams.has('limit'))
-        validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
-      if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
-      if (urlParams.has('query')) validParams.query = urlParams.get('query');
-      if (urlParams.has('category')) validParams.category = urlParams.get('category');
-      if (urlParams.has('madeIn')) validParams.madeIn = urlParams.get('madeIn');
+    if (process.env.IS_WEB) {
+      const urlParams = new URLSearchParams(window.location.search);
+      let validParams: any = {};
+      
+      if (this.config.saveParams) {
+        if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
+        if (urlParams.has('limit'))
+          validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
+        if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
+        if (urlParams.has('query')) validParams.query = urlParams.get('query');
+        if (urlParams.has('category')) validParams.category = urlParams.get('category');
+        if (urlParams.has('madeIn')) validParams.madeIn = urlParams.get('madeIn');
+      }
+  
+      await this.setParams({...this.initState().params, ...validParams, ...newParams}, true);
     }
-
-    await this.setParams({...this.initState().params, ...validParams, ...newParams}, true);
   }
 
   /**
@@ -99,17 +100,18 @@ class CatalogState extends StoreModule {
     );
 
     // Сохранить параметры в адрес страницы
-    if(this.config.saveParams){
-      let urlSearch = new URLSearchParams(exclude(params, this.initState().params)).toString();
-      const url =
-        window.location.pathname + (urlSearch ? `?${urlSearch}` : '') + window.location.hash;
-      if (replaceHistory) {
-        window.history.replaceState({}, '', url);
-      } else {
-        window.history.pushState({}, '', url);
+      if(process.env.IS_WEB) {
+      if(this.config.saveParams){
+        let urlSearch = new URLSearchParams(exclude(params, this.initState().params)).toString();
+        const url =
+          window.location.pathname + (urlSearch ? `?${urlSearch}` : '') + window.location.hash;
+        if (replaceHistory) {
+          window.history.replaceState({}, '', url);
+        } else {
+          window.history.pushState({}, '', url);
+        }
       }
-    }
-
+      }
     const apiParams = exclude(
       {
         limit: params.limit,
