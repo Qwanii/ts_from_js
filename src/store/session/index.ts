@@ -52,10 +52,10 @@ class SessionState extends StoreModule {
           },
           'Успешная авторизация',
         );
-
+        if (process.env.IS_WEB) {
         // Запоминаем токен, чтобы потом автоматически аутентифицировать юзера
         window.localStorage.setItem('token', res.data.result.token);
-
+        }
         // Устанавливаем токен в АПИ
         this.services.api.setHeader(this.config.tokenHeader, res.data.result.token);
 
@@ -85,9 +85,10 @@ class SessionState extends StoreModule {
         url: '/api/v1/users/sign',
         method: 'DELETE',
       });
+      if(process.env.IS_WEB) {
       // Удаляем токен
       window.localStorage.removeItem('token');
-      // Удаляем заголовок
+      }// Удаляем заголовок
       this.services.api.setHeader(this.config.tokenHeader, null);
     } catch (error) {
       console.error(error);
@@ -100,6 +101,7 @@ class SessionState extends StoreModule {
    * @return {Promise<void>}
    */
   async remind(): Promise<void> {
+    if (process.env.IS_WEB) {
     const token = localStorage.getItem('token');
     if (token) {
       // Устанавливаем токен в АПИ
@@ -143,6 +145,7 @@ class SessionState extends StoreModule {
       );
     }
   }
+}
 
   /**
    * Сброс ошибок авторизации

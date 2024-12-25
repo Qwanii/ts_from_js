@@ -28,6 +28,7 @@
     "@types/shallowequal": "^1.1.5",
     "connect-timeout": "^1.9.0",
     "express": "^4.21.2",
+    "express-http-proxy": "^2.1.1",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "nodemon": "^3.1.9",

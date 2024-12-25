@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import useServices from './use-services';
 
 /**
  * Хук для асинхронных расчётов, которые будут исполнены при первом рендере или изменении depends.
@@ -7,7 +8,19 @@ import { useEffect } from 'react';
  * @param options {{backForward}}
  */
 export default function useInit(initFunc, depends = [], backForward = false) {
+  if (process.env.IS_NODE) {
+    const promise = initFunc(false)
+    // @TODO Если колбэка возвращает промис, то добавляем его в общий список ожиданий
+    if (promise instanceof Promise) {
+      useServices().ssr.add(promise)
+    }
+  } else {
   useEffect(() => {
+
+    // @TODO Если хук вызывался при рендере на сервере, то при первом рендере на клиенте не надо вызывать так как инициализация уже выполнена!
+    // @TODO Как понять, что именно этот хук в конкретном компоненте вызвался??
+    // @TODO И как на клиенте узнать узнать, что хук вызывался на сервере??
+
     initFunc(false);
     // Если в истории браузера меняются только search-параметры, то react-router не оповестит
     // компонент об изменениях, поэтому хук можно явно подписать на событие изменения истории
@@ -19,4 +32,5 @@ export default function useInit(initFunc, depends = [], backForward = false) {
       };
     }
   }, depends);
+  }
 }

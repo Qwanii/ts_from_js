@@ -19,12 +19,13 @@ const config = {
     },
   },
   api: {
-    baseUrl: '',
+    baseUrl: process.env.IS_NODE ? 'http://query.rest' : '',
   },
   redux:{},
   websocket: {
     baseSocketUrl: 'ws://query.rest/ws'
-  }
+  },
+  ssr: {}
 };
 
 export default config;

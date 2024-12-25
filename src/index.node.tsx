@@ -7,7 +7,7 @@ import config from './config';
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux';
 
-export default (params) => {
+export default async (params) => {
 
   const services = new Services(config);
   
@@ -22,7 +22,15 @@ export default (params) => {
       </ServicesContext.Provider>
     </Provider>
   )
-  const html = renderToString(jsx)
+  
+   const html = renderToString(jsx)
+
+  await Promise.all([
+    services.ssr.promises
+  ])
+
+  const html2 = renderToString(jsx)
+
 
   return { html }
 
